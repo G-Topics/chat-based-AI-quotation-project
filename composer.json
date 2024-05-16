@@ -11,6 +11,9 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
+        "lucianotonet/groq-php": "^0.0.4",
+        "openai-php/client": "^0.8.5",
+        "openai-php/laravel": "^0.8.1",
         "twilio/sdk": "^8.0"
     },
     "require-dev": {
@@ -56,7 +59,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
