@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\HistorialChat;
 use App\Services\AIService;
 use App\Services\ChatService;
 use Illuminate\Http\Request;
@@ -27,9 +28,10 @@ class ChatController extends Controller
             $requestTelefono = $request->input('From');
             $telefono = substr($requestTelefono, strpos($requestTelefono, '+'));
             $cliente = Cliente::where('telefono', $telefono)->first();
+            $mensaje = $this->aiService->procesarMensaje($cliente, $request->input('Body'));
+            
             Log::info('cliente: ' . $cliente);
             $nombre = isset($cliente)?$cliente->nombre:'';
-            $mensaje = $this->aiService->procesarMensaje($nombre, $request->input('Body'));
             ChatService::enviarMensajePorWhatsapp($telefono, $mensaje);
         } catch (\Exception $e) {
             Log::error('Error al recibir el mensaje de whatsapp: ' . $e->getMessage());
