@@ -28,6 +28,7 @@ class AIService
         ]);
 
         $mensajeProcesado=$chatCompletion['choices'][0]['message']['content'];  
+        Log::info('mensaje procesado: '. $mensajeProcesado);
         return $mensajeProcesado;
     }
 

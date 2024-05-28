@@ -1,29 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
-use OpenAI\OpenAIApi;
-use Illuminate\Http\Request;
-use LucianoTonet\GroqPHP\Groq;
-
+use Illuminate\Support\Facades\Log;
+use OpenAI;
 class GPTController extends Controller
 {
 
-    private $groq;
-    public function __construct($apiKey){
-        $this->groq = new Groq($apiKey);
-    }
-    public function procesarMensaje($nombre, $mensaje) {
-        
-        $chatCompletion = $this->groq->chat()->completions()->create([
-          'model'    => 'llama3-70b-8192',
+  protected $openAIClient;
+
+  public function __construct()
+  {
+      $apiKey = env('OPENAI_API_KEY');
+      Log::info($apiKey);
+      $this->openAIClient = OpenAI::client($apiKey);
+  }
+
+  public function chat()
+  {
+      $result = $this->openAIClient->chat()->create([
+          'model' => 'gpt-4o',
           'messages' => [
-            [
-              'role'    => 'user',
-              'content' => 'Quiero que le respondas a la persona con este nombre : ' . $nombre .'para responderle este mensaje: '. $mensaje
-            ],
-          ]
-        ]);
-        $mensajeProcesado=$chatCompletion['choices'][0]['message']['content'];
-        return $mensajeProcesado;
-    }
+              ['role' => 'user', 'content' => 'Personalizar 3 GPTs con API GPT4o en Laravel'],
+          ],
+      ]);
+      return response()->json(['response' => $result['choices'][0]['message']['content']]);
+  }
 }

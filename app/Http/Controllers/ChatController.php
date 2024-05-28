@@ -22,9 +22,12 @@ class ChatController extends Controller
     public function recibirMensajeDeWhatsapp(Request $request)
     {
         try {
+            Log::info('body: ' . $request->input('Body'));
+            Log::info('from: ' . $request->input('From'));
             $requestTelefono = $request->input('From');
             $telefono = substr($requestTelefono, strpos($requestTelefono, '+'));
             $cliente = Cliente::where('telefono', $telefono)->first();
+            Log::info('cliente: ' . $cliente);
             $nombre = isset($cliente)?$cliente->nombre:'';
             $mensaje = $this->aiService->procesarMensaje($nombre, $request->input('Body'));
             ChatService::enviarMensajePorWhatsapp($telefono, $mensaje);
