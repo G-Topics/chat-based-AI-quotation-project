@@ -37,5 +37,18 @@ class ChatController extends Controller
             Log::error('Error al recibir el mensaje de whatsapp: ' . $e->getMessage());
         }
     }
+
+    public function recibirMensajeDeWhatsappV2()
+    {
+        try {
+            $telefono = '+59178472821';
+            $mensajeDeCliente='vende pollos, respondeme en español';
+            $cliente = Cliente::where('telefono', $telefono)->first();
+            $mensaje = $this->aiService->procesarMensajeV2($cliente, $mensajeDeCliente);
+            return $mensaje;
+        } catch (\Exception $e) {
+            Log::error('Error al recibir el mensaje de whatsapp: ' . $e->getMessage());
+        }
+    }
  
 }

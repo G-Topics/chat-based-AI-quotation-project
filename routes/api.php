@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/chat/recibir-mensaje', [ChatController::class, 'recibirMensajeDeWhatsapp']);
 Route::get('/gpt/procesar-prompt', [GPTController::class, 'chat']);
+Route::post('/chat/recibir-mensaje-v2', [ChatController::class, 'recibirMensajeDeWhatsappV2']);
 
