@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\HistorialChat;
+use App\Models\Chat;
 
 use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
@@ -26,23 +26,22 @@ class ChatService
     }
     public static function buscarUltimoMensaje($cliente)
     {
-        $ultimoHistorial = $cliente->historiales()
-            ->latest('fecha')
-            ->first();
-        return $ultimoHistorial;
+        return $cliente->chats()->latest('fecha')->first();
     }
-    public static function buscarHistorialMensajes($cliente) {
-      
-        return HistorialChat::where('id_cliente', $cliente->id)
-                             ->orderBy('fecha', 'asc')
-                             ->get();
+    public static function buscarHistorialMensajes($cliente)
+    {
+        return Chat::where('id_cliente', $cliente->id)
+                    ->orderBy('fecha', 'desc')
+                    ->take(10)
+                    ->get()
+                    ->reverse(); 
     }
-    public static function guardarMensaje($cliente, $role, $mensaje) {
-       
-        HistorialChat::create([
+    public static function guardarMensaje($cliente, $m_recibido, $m_enviado)
+    {
+        Chat::create([
             'id_cliente' => $cliente->id,
-            'role' => $role, 
-            'mensaje' => $mensaje,
+            'm_recibido' => $m_recibido,
+            'm_enviado' => $m_enviado,
             'fecha' => now(),
         ]);
     }

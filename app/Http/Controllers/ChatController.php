@@ -28,8 +28,7 @@ class ChatController extends Controller
             $requestTelefono = $request->input('From');
             $telefono = substr($requestTelefono, strpos($requestTelefono, '+'));
             $cliente = Cliente::where('telefono', $telefono)->first();
-            $mensaje = $this->aiService->procesarMensaje($cliente, $request->input('Body'));
-            
+            $mensaje = $this->aiService->procesarMensaje($cliente, $request->input('Body'));            
             Log::info('cliente: ' . $cliente);
             $nombre = isset($cliente)?$cliente->nombre:'';
             ChatService::enviarMensajePorWhatsapp($telefono, $mensaje);
